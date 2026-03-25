@@ -11,7 +11,7 @@ export interface Task {
   deadline: string; // ISO string for date and time
   status: "todo" | "in-progress" | "done";
   createdAt: any;
-  type: "assignment" | "project" | "quiz" | "discussion" | "presentation" | "slide" | "essay" | "both";
+  type: "assignment" | "project" | "quiz" | "discussion" | "presentation" | "both";
   submissions?: Submission[]; // new field
   evaluations?: Evaluation[]; // new field
 }
@@ -103,7 +103,7 @@ export const submitTask = async (taskId: string, userId: string, content: string
 export const evaluateSubmission = async (taskId: string, submissionId: string, evaluatorId: string, score: number, comment: string, financeMetrics?: number, quality?: number, softSkills?: number) => {
   try {
     const docRef = doc(db, "tasks", taskId);
-    const evaluation = {
+    const evaluation: any = {
       id: `${submissionId}_${Date.now()}`,
       submissionId,
       evaluatorId,

@@ -16,7 +16,7 @@ export default function DocumentTab({ roomId, role }: { roomId: string, role: "L
   const [textProcessing, setTextProcessing] = useState(false);
   const [assignmentText, setAssignmentText] = useState("");
   const [error, setError] = useState("");
-  const [taskType, setTaskType] = useState<"presentation" | "assignment" | "slide" | "essay" | "both">("assignment");
+  const [taskType, setTaskType] = useState<"presentation" | "assignment" | "both">("assignment");
   const [taskDeadline, setTaskDeadline] = useState("");
 
   const loadDocs = async () => {
@@ -199,13 +199,11 @@ export default function DocumentTab({ roomId, role }: { roomId: string, role: "L
               <label className="block text-sm font-medium text-slate-700 mb-1">Task Type</label>
               <select
                 value={taskType}
-                onChange={(e) => setTaskType(e.target.value as "presentation" | "assignment" | "slide" | "essay" | "both")}
+                onChange={(e) => setTaskType(e.target.value as "presentation" | "assignment" | "both")}
                 className="w-full border border-slate-300 rounded-lg px-3 py-2"
               >
                 <option value="assignment">Assignment</option>
                 <option value="presentation">Presentation</option>
-                <option value="slide">Slide</option>
-                <option value="essay">Essay</option>
                 <option value="both">Both (Assignment + Presentation)</option>
               </select>
             </div>

@@ -30,17 +30,9 @@ export async function POST(req: NextRequest) {
     const result = await model.generateContent(prompt);
     const emailBody = result.response.text();
 
-    // 2. Setup Nodemailer
-    // Note: In production, configure proper SMTP variables (e.g. SendGrid, Resend)
-    // Here we use environment variables or a fallback ethereal test account for demo
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.ethereal.email",
-      port: Number(process.env.SMTP_PORT) || 587,
-      auth: {
-        user: process.env.SMTP_USER || "test_user",
-        pass: process.env.SMTP_PASS || "test_pass",
-      },
-    });
+    // 2. Setup Nodemailer only for fallback path
+    // (not used when Resend API key is present)
+    // We will create transporter later in the block below.
 
     // 3. Resolve actual email addresses
     const predefined = effectiveEmails;

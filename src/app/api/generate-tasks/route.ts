@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-const pdfParse = require("pdf-parse");
+import * as pdfParse from "pdf-parse";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyAQH99wT9humD2T-oE1eXuYEAOix6Q-ssM";
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       const arrayBuffer = await fileRes.arrayBuffer();
 
       if (documentUrl.includes(".pdf") || documentUrl.includes("application%2Fpdf")) {
-        const pdfData = await pdfParse(Buffer.from(arrayBuffer));
+        const pdfData = await (pdfParse as any)(Buffer.from(arrayBuffer));
         text = pdfData.text;
       } else {
         text = Buffer.from(arrayBuffer).toString("utf-8");

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { submitTask } from "@/lib/firebase/tasks";
+import { submitTask, Task } from "@/lib/firebase/tasks";
 import { getRoom } from "@/lib/firebase/firestore";
 import { getUsersByUIDs } from "@/lib/firebase/users";
 import { doc, getDoc } from "firebase/firestore";
@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
     if (!taskDoc.exists()) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
-    const task = { id: taskDoc.id, ...taskDoc.data() };
+    const taskData = taskDoc.data() as Task;
+    const task = { ...taskData, id: taskDoc.id } as Task;
 
     // Get room
     const room = await getRoom(task.roomId);
@@ -41,7 +42,9 @@ export async function POST(req: NextRequest) {
 
     // Get their profiles
     const profiles = await getUsersByUIDs(otherMembers);
-    const emails = profiles.map(p => p.email).filter(e => e);
+    const emails = profiles
+      .map((p) => p.email)
+      .filter((e): e is string => typeof e === "string" && e.trim().length > 0);
 
     if (emails.length === 0) {
       return NextResponse.json({ success: true });
@@ -63,7 +66,7 @@ export async function POST(req: NextRequest) {
     const emailBody = result.response.text();
 
     // Send email
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.ethereal.email",
       port: Number(process.env.SMTP_PORT) || 587,
       auth: {

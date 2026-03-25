@@ -15,7 +15,7 @@ interface Assignment {
   id: string;
   title: string;
   description: string;
-  type: "presentation" | "assignment" | "slide" | "essay" | "both";
+  type: "presentation" | "assignment" | "both";
   deadline?: string;
   assignedMembers: string[];
 }
@@ -44,7 +44,7 @@ export default function AssignmentCreator({ roomId, onCreateAssignments }: Assig
   const [editForm, setEditForm] = useState({
     title: "",
     description: "",
-    type: "assignment" as "presentation" | "assignment" | "slide" | "essay" | "both",
+    type: "assignment" as "presentation" | "assignment" | "both",
     deadline: ""
   });
 
@@ -303,8 +303,6 @@ export default function AssignmentCreator({ roomId, onCreateAssignments }: Assig
                         >
                           <option value="assignment">Assignment</option>
                           <option value="presentation">Presentation</option>
-                          <option value="slide">Slide</option>
-                          <option value="essay">Essay</option>
                           <option value="both">Both</option>
                         </select>
                       ) : (
